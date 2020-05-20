@@ -1,4 +1,5 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer, useState, useCallback} from 'react';
+import uniqid from 'uniqid';
 import './App.css';
 import { Form } from './components/Form'
 import { Lists } from './components/Lists';
@@ -46,19 +47,44 @@ function useStickyState(defaultValue, key = 'toDoApp') {
 
 function App() {
   const [state, dispatch] = useStickyState(initialState, 'toDoApp');
+  const [inputValue, setInputValue] = useState('');
 
-  const addItem = (id, text) => {
+  const addItem = useCallback((id, text) => {
     dispatch({ type: "add", id, text});
-  };
+  },[dispatch]);
+
+  const onSubmitFunc = useCallback((e) => {
+    if(inputValue !== ''){
+        addItem(uniqid(), inputValue);
+    }
+  }, [addItem, inputValue])
+
+  const handleUserKeyPress = useCallback(event => {
+    const { keyCode } = event;
+
+    if (keyCode === 13) {
+      return onSubmitFunc();
+    }
+  }, [onSubmitFunc]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleUserKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress);
+    };
+
+  }, [handleUserKeyPress]);
 
   const deleteItem = (id) => {
     dispatch({ type: "del", id });
   };
+
   return (
     <div className="main-wrapper">
       <div className="toDoApp">
         <div className="toDoApp__inner">
-          <Form addItem={addItem}/>
+          <Form addItem={addItem} onSubmitFunc={onSubmitFunc} inputValue={inputValue} setInputValue={setInputValue}/>
           <Lists state={state} deleteItem={deleteItem}/>
         </div>
       </div>

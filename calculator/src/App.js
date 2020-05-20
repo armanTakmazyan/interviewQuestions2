@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import uniqid from 'uniqid';
 import './App.css';
 
 function App() {
   
+  const inputRef = useRef();
   const [historyValue, setHistoryValue] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
-  const inputChangeHandler = (e) => {
-    setInputValue(e.target.value);
-  };
+  useEffect(() => {
+    inputRef.current.focus();
+  },[]);
 
   const calculate = (e) => {
     setInputValue(prevInputState => {
@@ -27,6 +28,27 @@ function App() {
          return 'Not valid input';
        }
    });
+  };
+
+  const handleUserKeyPress = useCallback(event => {
+    const { keyCode } = event;
+
+    if (keyCode === 13) {
+      return calculate();
+    }
+  }, [calculate]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleUserKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress);
+    };
+
+  }, [handleUserKeyPress]);
+
+  const inputChangeHandler = (e) => {
+    setInputValue(e.target.value);
   };
 
   const clearHistory = (e) => {
@@ -60,7 +82,7 @@ function App() {
       <div className='calculator'>
         <div className='calculator__form'>
           <div className="calculator__form-inner">
-            <input type="text" className="calculator__form-input" value={inputValue} onChange={inputChangeHandler} placeholder="Expression..."/>
+            <input type="text" className="calculator__form-input" value={inputValue} onChange={inputChangeHandler} ref={inputRef} placeholder="Expression..."/>
             <button className="calculator__form-button" onClick={calculate}>=</button>
           </div>
         </div>

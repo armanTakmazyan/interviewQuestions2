@@ -1,16 +1,14 @@
-import React, {useState} from 'react';
-import uniqid from 'uniqid';
+import React, {useEffect, useRef} from 'react';
 
-export const Form = (props) => {
-    const [inputValue, setInputValue] = useState('');
-    const onSubmitFunc = (e) => {
-        if(inputValue !== ''){
-            props.addItem(uniqid(), inputValue);
-        }
-    }
+export const Form = ({ inputValue, setInputValue, onSubmitFunc }) => {
+    const inputRef = useRef();
+    useEffect(() => {
+      inputRef.current.focus();
+    },[]);
+
     return (
         <div className="toDoApp__form">
-            <input type="text" autoComplete="off" className="toDoApp__input" value={inputValue} placeholder="Add text" onChange={(e) => setInputValue(e.target.value)}/>
+            <input ref={inputRef} type="text" autoComplete="off" className="toDoApp__input" value={inputValue} placeholder="Add text" onChange={(e) => setInputValue(e.target.value)}/>
             <button onClick={onSubmitFunc} className="toDoApp__button">ADD</button>
         </div>
     );
