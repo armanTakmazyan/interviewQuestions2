@@ -1,0 +1,97 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
+.main-wrapper {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.toDoApp {
+  flex: 0 1 800px;
+  background-color: rgb(32, 32, 32);
+}
+
+.toDoApp__inner {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.toDoApp__form {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.toDoApp__input {
+  flex: 1 1 auto;
+  padding: 5px;
+}
+
+.toDoApp__input:focus {
+  outline: none;
+}
+
+.toDoApp__lists {
+  background-color: rgb(32, 32, 32);
+  margin: 10px 0px 0px 0px;
+  border: 1px solid #292929;;
+}
+
+.toDoApp__list {
+  border: 1px solid black;
+  position: relative;
+  padding: 5px 35px 5px 10px;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  background-color: #565656;
+  color: white;
+  min-height: 20px;
+}
+
+.toDoApp__list + .toDoApp__list {
+  margin: 10px 0px 0px 0px;
+}
+
+.toDoApp__button {
+  border: 0px;
+  padding: 10px 20px 10px 20px;
+  color: #fff;
+  background-color: #292929;
+  cursor: pointer;
+}
+
+.toDoApp__button:hover {
+  background-color: #f00;
+}
+
+
+.toDoApp__list:hover {
+  text-decoration: line-through;
+  cursor: pointer;
+  background-color: rgb(165, 0, 0);
+  color: #000;
+}
+
+.toDoApp__close-button {
+  padding: 5px 10px 5px 10px;
+  background-color: #292929;
+  color: white;
+  border: 0px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+}
+
+.toDoApp__close-button:hover {
+  background-color: #f00;
+}
